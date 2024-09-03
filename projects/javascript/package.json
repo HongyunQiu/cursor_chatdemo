@@ -1,0 +1,21 @@
+{
+  "name": "javascript-hello-world",
+  "version": "1.0.0",
+  "description": "A simple JavaScript Hello World project",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "keywords": [
+    "javascript",
+    "hello world"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "https-proxy-agent": "^7.0.5",
+    "mongodb": "^6.8.0",
+    "openai": "^4.57.1"
+  }
+}
