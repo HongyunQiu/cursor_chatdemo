@@ -1,15 +1,26 @@
-# Getting started
+## Getting Started
+## This is a simple chat demo using openai and write with cursor AI 
+## This demo includes the proxy (127.0.0.0:7890) to access openai API. 
 
-Welcome to Cursor! Here are the basics:
+Install dependencies
+node --version to check node version and if node is available
 
-* Prompt an edit
-  - Highlight code and hit Cmd+K
-* Accept an autocomplete
-  - Try typing and hit Tab when you see a suggestion
-* Ask a question
-  - Use Cmd+L to open the chat 
-  - Use @ to import files or documentation
-  - Highlight code and hit Cmd+Shift+L to focus the AI on particular pieces of code
-  - Try the "with codebase" button to ask about the entire repo
+npm install openai dotenv     
+npm install https-proxy-agent     
 
-If you run into any trouble or have any feedback, feel free to post on forum.cursor.sh. For more on our features, see cursor.sh/features.
+
+make a .evn file on the same folder as package.json and add the following line
+OPENAI_API_KEY=your license key from openai
+
+
+```
+cd /projects/javascript
+node src/index.js
+```
+
+After success run the project, you can see the following message in the terminal
+Server running on http://localhost:3000
+
+then open http://localhost:3000 in your browser
+
+![alt text](image.png)
