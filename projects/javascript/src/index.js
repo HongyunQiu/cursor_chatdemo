@@ -47,12 +47,21 @@ async function handleAIChatRequest(req, res) {
     });
     req.on('end', async () => {
         try {
-            console.log('Received request body:', body);
-            const { message } = JSON.parse(body);
-            console.log('Sending message to OpenAI:', message);
+            const { message, systemPrompt, conversationHistory } = JSON.parse(body);
+            console.log('System prompt:', systemPrompt);
+            
+            const messages = [
+                { role: "system", content: systemPrompt },
+                ...conversationHistory.map(msg => ({ role: msg.role, content: msg.content })),
+                { role: "user", content: message }
+            ];
+
             const completion = await openai.chat.completions.create({
-                messages: [{ role: "user", content: message }],
-                model: "gpt-3.5-turbo",
+                model: "gpt-3.5-turbo",  // 或者使用 "gpt-4" 如果您有访问权限
+                messages: messages,
+                temperature: 0.7,
+                max_tokens: 1500,
+                top_p: 1
             });
             const response = completion.choices[0].message.content;
             console.log('Received response from OpenAI:', response);

@@ -3,6 +3,7 @@ class AIChat {
         this.messages = [];
         this.chatHistory = [];
         this.currentChatId = null;
+        this.currentSystemPrompt = "default";
         this.initEventListeners();
         this.loadChatHistory();
     }
@@ -10,6 +11,9 @@ class AIChat {
     initEventListeners() {
         document.getElementById('chatForm').addEventListener('submit', this.handleSendMessage.bind(this));
         document.getElementById('newChatBtn').addEventListener('click', this.startNewChat.bind(this));
+        document.querySelectorAll('.prompt-btn').forEach(btn => {
+            btn.addEventListener('click', this.handleSystemPromptChange.bind(this));
+        });
     }
 
     async handleSendMessage(e) {
@@ -33,10 +37,24 @@ class AIChat {
     }
 
     async sendMessage(message) {
+        const systemPrompts = {
+            default: "You are a helpful assistant. Provide clear and concise responses.",
+            professional: "You are a top-tier professional consultant. Always provide concise, expert advice with a formal tone. Use industry-specific terminology when appropriate. Your responses should be structured and to-the-point.",
+            creative: "You are an extremely creative writer. Always respond with vivid, imaginative descriptions. Use metaphors, similes, and rich vocabulary. Your answers should be poetic and evocative.",
+            friendly: "You are a super friendly and casual chat companion. Always keep your responses upbeat, use informal language, and sprinkle in some humor. Feel free to use emojis and internet slang. Your goal is to make the conversation fun and engaging.",
+            academic: "You are a distinguished academic researcher. Always provide detailed, well-researched answers. Use formal academic language, cite relevant studies or theories, and maintain a scholarly tone. Structure your responses with clear arguments and evidence."
+        };
+
+        const selectedPrompt = systemPrompts[this.currentSystemPrompt];
+        
         const response = await fetch('/api/ai-chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message }),
+            body: JSON.stringify({ 
+                message,
+                systemPrompt: selectedPrompt,
+                conversationHistory: this.messages // 发送整个对话历史
+            }),
         });
         if (!response.ok) {
             throw new Error('Failed to send message');
@@ -111,6 +129,15 @@ class AIChat {
         this.messages = [];
         document.getElementById('chatMessages').innerHTML = '';
         document.getElementById('messageInput').value = '';
+    }
+
+    handleSystemPromptChange(e) {
+        const promptType = e.target.dataset.prompt;
+        this.currentSystemPrompt = promptType;
+        document.querySelectorAll('.prompt-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        e.target.classList.add('active');
     }
 }
 
