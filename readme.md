@@ -1,4 +1,3 @@
-## Getting Started
 ## This is a simple chat demo using openai and write with cursor AI 
 
 This demo includes the proxy (127.0.0.1:7890) to access openai API. You can change the proxy to your own proxy if you have one.
